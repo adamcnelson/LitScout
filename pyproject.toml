@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "litscout"
+version = "0.1.0"
+description = "Automated literature search and summarization CLI"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Adam Nelson"}
+]
+keywords = ["literature", "search", "pubmed", "arxiv", "biorxiv", "summarization", "claude"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "anthropic>=0.40.0",
+    "pyyaml>=6.0",
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+litscout = "litscout.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/adamnelson/LitScout"
+Repository = "https://github.com/adamnelson/LitScout"
+Issues = "https://github.com/adamnelson/LitScout/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["litscout*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

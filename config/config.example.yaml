@@ -1,0 +1,30 @@
+output_dir: "~/Documents/LitScout/reports"
+top_k_per_topic: 10
+
+# How far back to look on the first ever run (in days).
+# After first run, the system does incremental updates using stored state.
+initial_lookback_days: 14
+
+# Notifications (all optional, disabled by default)
+notifications:
+  email:
+    enabled: false                    # Set to true to enable email notifications
+    to: ""                            # Recipient email address
+    subject_prefix: "LitScout"        # Subject will be: "{prefix} — {date}"
+    attach_report: true               # Attach the full Markdown report
+    include_top_links_in_body: true   # Include paper links in email body
+
+# Define your search topics below
+topics:
+  - name: "Example Topic"
+    query: >
+      (term1 OR term2) AND (term3 OR term4)
+    exclude:
+      - protocol
+      - corrigendum
+      - retraction
+    sources:
+      - pubmed
+      - biorxiv
+      - medrxiv
+      - arxiv
