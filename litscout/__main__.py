@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import re
 import sys
 from dataclasses import replace
 from datetime import datetime, timedelta
@@ -71,6 +72,32 @@ def get_config_path(args_config: str | None) -> str:
             return path
 
     return None
+
+
+def get_last_report_timestamp(output_dir: Path) -> datetime | None:
+    """Find the most recent report and extract its timestamp.
+
+    Report files are named: litscout_report_YYYY-MM-DD_HHMMSS.md
+    Returns the datetime from the most recent report, or None if no reports exist.
+    """
+    if not output_dir.exists():
+        return None
+
+    # Pattern: litscout_report_2026-01-12_133343.md
+    pattern = re.compile(r"litscout_report_(\d{4}-\d{2}-\d{2}_\d{6})\.md$")
+
+    latest_timestamp = None
+    for report_file in output_dir.glob("litscout_report_*.md"):
+        match = pattern.match(report_file.name)
+        if match:
+            try:
+                timestamp = datetime.strptime(match.group(1), "%Y-%m-%d_%H%M%S")
+                if latest_timestamp is None or timestamp > latest_timestamp:
+                    latest_timestamp = timestamp
+            except ValueError:
+                continue
+
+    return latest_timestamp
 
 
 def cmd_init(args: argparse.Namespace) -> int:
@@ -316,9 +343,14 @@ def cmd_run(
     papers_by_topic: dict[str, list[Paper]] = {}
     now = datetime.now()
 
+    # Check for last report timestamp (for lookback on manual runs)
+    last_report_time = get_last_report_timestamp(config.output_dir)
+
     log.info(f"LitScout run started at {now.strftime('%Y-%m-%d %H:%M:%S')}")
     log.verbose(f"Config: {config_path}")
     log.verbose(f"Database: {db_path}")
+    if last_report_time:
+        log.verbose(f"Last report: {last_report_time.strftime('%Y-%m-%d %H:%M:%S')}")
     log.info(f"Topics: {len(config.topics)}")
     log.info("")
 
@@ -332,11 +364,17 @@ def cmd_run(
                 log.warning(f"Unknown source: {source}, skipping")
                 continue
 
-            # Determine date range
+            # Determine date range:
+            # 1. Use database last_run if available (scheduled/incremental runs)
+            # 2. Fall back to last report timestamp (manual runs catch up)
+            # 3. Otherwise use initial_lookback_days (first run)
             last_run = db.get_last_run(topic.name, source)
             if last_run:
                 since = last_run
                 log.verbose(f"{source}: incremental from {since.strftime('%Y-%m-%d')}")
+            elif last_report_time:
+                since = last_report_time
+                log.verbose(f"{source}: from last report ({since.strftime('%Y-%m-%d %H:%M')})")
             else:
                 since = now - timedelta(days=config.initial_lookback_days)
                 log.verbose(f"{source}: initial lookback ({config.initial_lookback_days} days)")
