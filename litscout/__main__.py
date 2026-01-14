@@ -15,6 +15,8 @@ from .notifier import create_notifier
 from .rank import rank_papers
 from .report import generate_report
 from .sources import fetch_arxiv, fetch_biorxiv, fetch_medrxiv, fetch_pubmed
+from .sources.collect_podcasts import PodcastEpisode, collect_podcasts
+from .sources.collect_youtube import YouTubeVideo, collect_youtube
 from .summarize import load_prompt_template, summarize_paper
 
 # Map source names to fetcher functions
@@ -141,6 +143,24 @@ topics:
       - pubmed
       - biorxiv
       - medrxiv
+
+    # Media collection (podcasts and YouTube)
+    # Uncomment to enable
+    # media:
+    #   podcasts:
+    #     enabled: true
+    #     n: 4                    # Max episodes per topic
+    #     min_minutes: 30         # Minimum duration
+    #     recency_days: 30        # How far back to look
+    #     # allow_shows: []       # Only these shows (empty = all)
+    #     # block_shows: []       # Never these shows
+    #   youtube:
+    #     enabled: true
+    #     n: 4                    # Max videos per topic
+    #     min_minutes: 45         # Minimum duration
+    #     recency_days: 30        # How far back to look
+    #     # allow_channels: []    # Only these channels (empty = all)
+    #     # block_channels: []    # Never these channels
 '''
     config_path = base_path / "config" / "config.yaml"
     config_path.write_text(config_content)
@@ -238,6 +258,13 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         log.info("[!!] ANTHROPIC_API_KEY not set")
         issues.append("ANTHROPIC_API_KEY environment variable not set")
 
+    # Check YouTube API key (optional, for media collection)
+    youtube_key = os.environ.get("YOUTUBE_API_KEY")
+    if youtube_key:
+        log.info(f"[OK] YOUTUBE_API_KEY set ({len(youtube_key)} chars)")
+    else:
+        log.info("[--] YOUTUBE_API_KEY not set (optional, for YouTube collection)")
+
     # Check config file
     config_path = get_config_path(args.config)
     if config_path and Path(config_path).exists():
@@ -259,7 +286,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     # Check dependencies
     log.info("")
     log.info("Dependencies:")
-    for pkg in ["anthropic", "yaml", "requests"]:
+    for pkg in ["anthropic", "yaml", "requests", "feedparser"]:
         try:
             __import__(pkg)
             log.info(f"  [OK] {pkg}")
@@ -341,6 +368,8 @@ def cmd_run(
     prompt_template = load_prompt_template(prompt_path)
 
     papers_by_topic: dict[str, list[Paper]] = {}
+    podcasts_by_topic: dict[str, list[PodcastEpisode]] = {}
+    videos_by_topic: dict[str, list[YouTubeVideo]] = {}
     now = datetime.now()
 
     # Check for last report timestamp (for lookback on manual runs)
@@ -432,11 +461,37 @@ def cmd_run(
             papers_by_topic[topic.name] = []
             log.info("  No new papers found")
 
+        # Collect media (podcasts and YouTube videos)
+        if topic.media.podcasts.enabled:
+            try:
+                log.verbose("Collecting podcasts...")
+                podcasts = collect_podcasts(topic.query, topic.media.podcasts)
+                podcasts_by_topic[topic.name] = podcasts
+                log.info(f"  Found {len(podcasts)} podcast episodes")
+            except Exception as e:
+                log.warning(f"Podcast collection failed: {e}")
+                podcasts_by_topic[topic.name] = []
+
+        if topic.media.youtube.enabled:
+            try:
+                log.verbose("Collecting YouTube videos...")
+                videos = collect_youtube(topic.query, topic.media.youtube)
+                videos_by_topic[topic.name] = videos
+                log.info(f"  Found {len(videos)} YouTube videos")
+            except Exception as e:
+                log.warning(f"YouTube collection failed: {e}")
+                videos_by_topic[topic.name] = []
+
         log.info("")
 
     # Generate report
     if not dry_run:
-        report_path = generate_report(papers_by_topic, config.output_dir)
+        report_path = generate_report(
+            papers_by_topic,
+            config.output_dir,
+            podcasts_by_topic=podcasts_by_topic,
+            videos_by_topic=videos_by_topic,
+        )
         log.info(f"Report generated: {report_path}")
 
         # Send notification (failures are non-fatal)
