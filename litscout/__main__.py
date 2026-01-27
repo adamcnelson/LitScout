@@ -508,14 +508,24 @@ def cmd_run(
 
     # Generate report
     if not dry_run:
+        # Find docs directory for MkDocs publishing (if it exists)
+        # Look for docs/ relative to config directory's parent (repo root)
+        repo_root = config_dir.parent
+        docs_dir = repo_root / "docs"
+        if not docs_dir.exists():
+            docs_dir = None  # Skip MkDocs publishing if docs/ doesn't exist
+
         report_path = generate_report(
             papers_by_topic,
             config.output_dir,
             podcasts_by_topic=podcasts_by_topic,
             videos_by_topic=videos_by_topic,
             trials_by_topic=trials_by_topic,
+            docs_dir=docs_dir,
         )
         log.info(f"Report generated: {report_path}")
+        if docs_dir:
+            log.verbose(f"MkDocs reports updated in: {docs_dir / 'reports'}")
 
         # Send notification (failures are non-fatal)
         notifier = create_notifier(email_config)

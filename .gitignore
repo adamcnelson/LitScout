@@ -46,8 +46,12 @@ htmlcov/
 # LitScout project files (user-specific)
 config/config.yaml
 config/litscout.db
+config/.cache/
 data/*.db
-reports/
+/reports/
+
+# MkDocs build output
+site/
 
 # Keep example config
 !config/config.example.yaml
