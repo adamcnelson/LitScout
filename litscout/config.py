@@ -111,11 +111,33 @@ class YouTubeConfig:
 
 
 @dataclass
+class TrialsConfig:
+    """ClinicalTrials.gov collection configuration."""
+
+    enabled: bool = False  # Disabled by default
+    n: int = 8
+    min_phase: int = 1
+    recency_days: int = 30
+    status_allow: list[str] = field(
+        default_factory=lambda: [
+            "RECRUITING",
+            "NOT_YET_RECRUITING",
+            "ACTIVE_NOT_RECRUITING",
+            "COMPLETED",
+        ]
+    )
+    query: str = ""  # Override topic query if set
+    include_conditions: list[str] = field(default_factory=list)
+    exclude_terms: list[str] = field(default_factory=list)
+
+
+@dataclass
 class MediaConfig:
     """Media collection configuration for a topic."""
 
     podcasts: PodcastConfig = field(default_factory=PodcastConfig)
     youtube: YouTubeConfig = field(default_factory=YouTubeConfig)
+    trials: TrialsConfig = field(default_factory=TrialsConfig)
 
 
 @dataclass
@@ -308,4 +330,25 @@ def _parse_media_config(media_data: dict, topic_name: str) -> MediaConfig:
             require_title_signals=DEFAULT_SEMINAR_SIGNALS.copy(),
         )
 
-    return MediaConfig(podcasts=podcasts, youtube=youtube)
+    # Handle trials: false to disable
+    trials_data = media_data.get("trials", {})
+    if trials_data is False:
+        trials = TrialsConfig(enabled=False)
+    elif isinstance(trials_data, dict):
+        trials = TrialsConfig(
+            enabled=trials_data.get("enabled", False),  # Disabled by default
+            n=trials_data.get("n", 8),
+            min_phase=trials_data.get("min_phase", 1),
+            recency_days=trials_data.get("recency_days", 30),
+            status_allow=trials_data.get(
+                "status_allow",
+                ["RECRUITING", "NOT_YET_RECRUITING", "ACTIVE_NOT_RECRUITING", "COMPLETED"],
+            ),
+            query=trials_data.get("query", ""),
+            include_conditions=trials_data.get("include_conditions", []),
+            exclude_terms=trials_data.get("exclude_terms", []),
+        )
+    else:
+        trials = TrialsConfig()
+
+    return MediaConfig(podcasts=podcasts, youtube=youtube, trials=trials)

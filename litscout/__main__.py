@@ -16,8 +16,9 @@ from .rank import rank_papers
 from .report import generate_report
 from .sources import fetch_arxiv, fetch_biorxiv, fetch_medrxiv, fetch_pubmed
 from .sources.collect_podcasts import PodcastEpisode, collect_podcasts
+from .sources.collect_trials import ClinicalTrial, collect_trials
 from .sources.collect_youtube import YouTubeVideo, collect_youtube
-from .summarize import load_prompt_template, summarize_paper
+from .summarize import load_prompt_template, summarize_paper, summarize_trial
 
 # Map source names to fetcher functions
 SOURCE_FETCHERS = {
@@ -370,6 +371,7 @@ def cmd_run(
     papers_by_topic: dict[str, list[Paper]] = {}
     podcasts_by_topic: dict[str, list[PodcastEpisode]] = {}
     videos_by_topic: dict[str, list[YouTubeVideo]] = {}
+    trials_by_topic: dict[str, list[ClinicalTrial]] = {}
     now = datetime.now()
 
     # Check for last report timestamp (for lookback on manual runs)
@@ -482,6 +484,26 @@ def cmd_run(
                 log.warning(f"YouTube collection failed: {e}")
                 videos_by_topic[topic.name] = []
 
+        if topic.media.trials.enabled:
+            try:
+                log.verbose("Collecting clinical trials...")
+                cache_dir = config_dir / ".cache" / "ctgov"
+                trials = collect_trials(topic.query, topic.media.trials, cache_dir)
+                # Optionally summarize trials
+                if not no_summarize:
+                    for trial in trials:
+                        if not trial.relevance_summary:
+                            log.verbose(f"Summarizing trial: {trial.nct_id}...")
+                            try:
+                                trial.relevance_summary = summarize_trial(trial)
+                            except Exception as e:
+                                log.warning(f"Error summarizing trial: {e}")
+                trials_by_topic[topic.name] = trials
+                log.info(f"  Found {len(trials)} clinical trials")
+            except Exception as e:
+                log.warning(f"Clinical trials collection failed: {e}")
+                trials_by_topic[topic.name] = []
+
         log.info("")
 
     # Generate report
@@ -491,6 +513,7 @@ def cmd_run(
             config.output_dir,
             podcasts_by_topic=podcasts_by_topic,
             videos_by_topic=videos_by_topic,
+            trials_by_topic=trials_by_topic,
         )
         log.info(f"Report generated: {report_path}")
 
