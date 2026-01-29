@@ -1,10 +1,32 @@
 # Neuropsychiatry Mechanisms
 
-*Report generated: 2026-01-28 21:02:38*
+*Report generated: 2026-01-28 21:17:26*
 
-**0 papers** | **4 podcasts**
+**2 papers** | **4 podcasts**
 
 ---
+
+## Papers
+
+### 1. Genome-wide investigation highlights global and local pleiotropy linking neurodevelopmental disorders to acquired hearing problems.
+
+**Authors:** Qishu Zhang, Brenda Cabrera-Mendoza, Qianyu Chen, David Davtian, Dan Qiu et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41593863/](https://pubmed.ncbi.nlm.nih.gov/41593863/)
+
+*Summary not available.*
+
+### 2. Relapse in alcohol dependence is characterized by disrupted modular brain network organization.
+
+**Authors:** Justin Böhmer, Michael Marxen, Ilya M Veer, Maria Garbusow, Marco Bottino et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41603908/](https://pubmed.ncbi.nlm.nih.gov/41603908/)
+
+*Summary not available.*
 
 ## Podcast Episodes
 

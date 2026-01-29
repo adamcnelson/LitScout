@@ -1,10 +1,72 @@
 # CNS Biomarkers
 
-*Report generated: 2026-01-28 21:02:38*
+*Report generated: 2026-01-28 21:17:26*
 
-**0 papers** | **3 trials**
+**6 papers** | **3 trials**
 
 ---
+
+## Papers
+
+### 1. Neuroimmune Cross-Talk and Multilevel Cascades in Fentanyl Toxicity: Interplay of Hypoxic Stress, Glial Activation, and Synaptic Dysregulation in Systems-Level Neurodegeneration.
+
+**Authors:** Hamzeh J Al-Ameer, Noor Mazin Basheer, Malathi H, Aman Shankhyan, Rajashree Panigrahi et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41604235/](https://pubmed.ncbi.nlm.nih.gov/41604235/)
+
+*Summary not available.*
+
+### 2. Stage-specific temporal associations between body mass index trajectories and Alzheimer's disease pathologies.
+
+**Authors:** Mingxi Dang, Kewei Chen, Dandan Wang, Feng Sang, Zhanjun Zhang et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41603947/](https://pubmed.ncbi.nlm.nih.gov/41603947/)
+
+*Summary not available.*
+
+### 3. Discordance of Dopaminergic Dysfunction and Subcortical Atrophy by α-Synuclein Status in Sporadic and Genetic Parkinson's Disease.
+
+**Authors:** Michael Tran Duong, Sandhitsu R Das, Pulkit Khandelwal, Joaquin A Vizcarra, Yue Li et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41603647/](https://pubmed.ncbi.nlm.nih.gov/41603647/)
+
+*Summary not available.*
+
+### 4. Clinical and Imaging Characteristics of Parkinson's Disease with Negative Alpha-Synuclein Seed Amplification Assay.
+
+**Authors:** Sarah M Brooker, Jacopo Pasquini, Seung Ho Choi, David-Erick Lafontant, Seyed-Mohammad Fereshtehnejad et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41603617/](https://pubmed.ncbi.nlm.nih.gov/41603617/)
+
+*Summary not available.*
+
+### 5. Independent associations of phosphorylated tau181 and neurofilament light with cognitive outcomes in the Health and Aging Brain Study-Health Disparities (HABS-HD).
+
+**Authors:** Mohammad Housini, Joey Annette Contreras, Cellas A Hayes
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41603391/](https://pubmed.ncbi.nlm.nih.gov/41603391/)
+
+*Summary not available.*
+
+### 6. Endothelin 2-Mediated Neuroinflammation Drives Hypertension-Associated Retinal Dysfunction
+
+**Authors:** Cui, Y.;  Au, M.-T.;  Zhang, L.;  Zhang, T.;  Pan, L. et al.
+
+**Source:** biorxiv | **Published:** 2026-01-28
+
+**Link:** [https://www.biorxiv.org/content/10.64898/2026.01.26.701756](https://www.biorxiv.org/content/10.64898/2026.01.26.701756)
+
+*Summary not available.*
 
 ## Clinical Trials
 
