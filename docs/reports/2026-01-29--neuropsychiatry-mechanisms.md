@@ -1,10 +1,72 @@
 # Neuropsychiatry Mechanisms
 
-*Report generated: 2026-01-28 21:38:31*
+*Report generated: 2026-01-29 16:01:40*
 
-**0 papers** | **4 podcasts**
+**6 papers** | **4 podcasts**
 
 ---
+
+## Papers
+
+### 1. Single-dose DMT reverses anhedonia and cognitive deficits via restoration of neurogenesis in a stress-induced depression model.
+
+**Authors:** Rafael V Lima da Cruz, Rêmullo B G de Miranda Costa, Gabriel M de Queiroz, Tijana Stojanovic, Thiago C Moulin et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-29
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41605889/](https://pubmed.ncbi.nlm.nih.gov/41605889/)
+
+*Summary not available.*
+
+### 2. Most ventral pallidal cholinergic neurons are bursting basal forebrain cholinergic neurons with mesocorticolimbic connectivity.
+
+**Authors:** Dániel Schlingloff, Írisz Szabó, Éva Gulyás, Bálint Király, Réka Kispál et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41605651/](https://pubmed.ncbi.nlm.nih.gov/41605651/)
+
+*Summary not available.*
+
+### 3. Prototypical Representation Learning for Multi-Site Domain Generalization in Schizophrenia Diagnosis.
+
+**Authors:** Yixin Ji, Vince D Calhoun, Jin Zhang, Qi Zhu, Shengrong Li et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-28
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41605185/](https://pubmed.ncbi.nlm.nih.gov/41605185/)
+
+*Summary not available.*
+
+### 4. Mechanisms of disrupted neurodevelopment after Zika virus infection in infancy
+
+**Authors:** Edara, V. V.;  Freeman, S.;  Sampson, M. M.;  Moore, K.;  Richardson, R. et al.
+
+**Source:** biorxiv | **Published:** 2026-01-28
+
+**Link:** [https://www.biorxiv.org/content/10.64898/2026.01.26.701807](https://www.biorxiv.org/content/10.64898/2026.01.26.701807)
+
+*Summary not available.*
+
+### 5. Circuit-Specific Resting-State fMRI Signatures for Stratifying First-Episode Major Depressive Disorder and Predicting Recurrence Risk
+
+**Authors:** Tu, Y.; Hao, K.; Wang, F.; Qiu, S.; Zhang, W.
+
+**Source:** biorxiv | **Published:** 2026-01-29
+
+**Link:** [https://www.biorxiv.org/content/10.64898/2026.01.26.701909](https://www.biorxiv.org/content/10.64898/2026.01.26.701909)
+
+*Summary not available.*
+
+### 6. Is the Antidepressant Efficacy of Ketamine and Esketamine Mediated via Opioid Mechanisms?
+
+**Authors:** Andy Lu, Heidi Xu, Gia Han Le, Christine E Dri, Sabrina Wong et al.
+
+**Source:** pubmed | **Published:** 2026-Jan-29
+
+**Link:** [https://pubmed.ncbi.nlm.nih.gov/41607072/](https://pubmed.ncbi.nlm.nih.gov/41607072/)
+
+*Summary not available.*
 
 ## Podcast Episodes
 
