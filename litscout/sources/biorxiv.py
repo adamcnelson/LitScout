@@ -49,7 +49,7 @@ def _fetch_rxiv(
 
     # API endpoint format: /details/{server}/{start}/{end}/{cursor}
     cursor = 0
-    query_terms = _extract_query_terms(query)
+    query_groups = _parse_query_groups(query)
     found = 0
 
     while found < max_results:
@@ -72,7 +72,7 @@ def _fetch_rxiv(
             return
 
         for item in collection:
-            paper = _parse_item(item, server, topic, query_terms)
+            paper = _parse_item(item, server, topic, query_groups)
             if paper:
                 yield paper
                 found += 1
@@ -89,45 +89,96 @@ def _fetch_rxiv(
         time.sleep(0.5)  # Rate limiting
 
 
-def _extract_query_terms(query: str) -> list[str]:
-    """Extract searchable terms from a query string."""
+def _parse_query_groups(query: str) -> list[list[str]]:
+    """
+    Parse a boolean query into AND-connected groups of OR terms.
+
+    Example: "(A OR B) AND (C OR D)" -> [['a', 'b'], ['c', 'd']]
+
+    Each inner list is an OR group; all groups must match (AND logic).
+    """
     import re
 
-    # Remove boolean operators and parentheses
-    query = re.sub(r"\b(AND|OR|NOT)\b", " ", query, flags=re.IGNORECASE)
-    query = re.sub(r"[()]", " ", query)
-    # Extract quoted phrases and individual terms
-    terms = []
-    # Quoted phrases
-    for match in re.findall(r'"([^"]+)"', query):
-        terms.append(match.lower())
-    # Remove quoted parts and get remaining terms
-    query = re.sub(r'"[^"]*"', " ", query)
-    for term in query.split():
-        term = term.strip().lower()
-        # Skip wildcards at the end, but keep the base term
-        if term.endswith("*"):
-            term = term[:-1]
-        if len(term) >= 3:  # Skip very short terms
-            terms.append(term)
-    return terms
+    # Normalize whitespace
+    query = " ".join(query.split())
+
+    # Split on AND (case insensitive) to get groups
+    and_parts = re.split(r"\s+AND\s+", query, flags=re.IGNORECASE)
+
+    groups = []
+    for part in and_parts:
+        # Remove outer parentheses
+        part = part.strip()
+        while part.startswith("(") and part.endswith(")"):
+            part = part[1:-1].strip()
+
+        # Split on OR to get terms within this group
+        or_parts = re.split(r"\s+OR\s+", part, flags=re.IGNORECASE)
+
+        terms = []
+        for term in or_parts:
+            term = term.strip()
+            # Remove parentheses and quotes
+            term = re.sub(r"[()]", "", term)
+
+            # Handle quoted phrases
+            if term.startswith('"') and term.endswith('"'):
+                term = term[1:-1]
+
+            # Handle wildcards (keep as prefix match)
+            term = term.lower().strip()
+
+            if len(term) >= 2:  # Skip very short terms
+                terms.append(term)
+
+        if terms:
+            groups.append(terms)
+
+    return groups
 
 
-def _matches_query(text: str, terms: list[str]) -> bool:
-    """Check if text contains any of the query terms."""
+def _term_matches(text: str, term: str) -> bool:
+    """Check if a term matches in text, supporting wildcards."""
+    if term.endswith("*"):
+        # Prefix match
+        prefix = term[:-1]
+        return prefix in text
+    else:
+        # Exact word or phrase match
+        return term in text
+
+
+def _matches_query(text: str, query_groups: list[list[str]]) -> bool:
+    """
+    Check if text matches the query using proper AND/OR logic.
+
+    All groups must match (AND). Within each group, any term matching suffices (OR).
+    """
+    if not query_groups:
+        return True
+
     text_lower = text.lower()
-    # Match if any term is found
-    return any(term in text_lower for term in terms)
+
+    # ALL groups must match (AND logic between groups)
+    for group in query_groups:
+        # At least ONE term in the group must match (OR logic within group)
+        group_matched = any(_term_matches(text_lower, term) for term in group)
+        if not group_matched:
+            return False
+
+    return True
 
 
-def _parse_item(item: dict, server: str, topic: str, query_terms: list[str]) -> Paper | None:
+def _parse_item(
+    item: dict, server: str, topic: str, query_groups: list[list[str]]
+) -> Paper | None:
     """Parse a bioRxiv/medRxiv API item into a Paper."""
     title = item.get("title", "")
     abstract = item.get("abstract", "")
 
-    # Filter by query terms (since API doesn't support search)
+    # Filter by query (since API doesn't support search)
     searchable = f"{title} {abstract}"
-    if query_terms and not _matches_query(searchable, query_terms):
+    if query_groups and not _matches_query(searchable, query_groups):
         return None
 
     doi = item.get("doi", "")
