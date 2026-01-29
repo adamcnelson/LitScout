@@ -1,32 +1,10 @@
 # Neuropsychiatry Mechanisms
 
-*Report generated: 2026-01-28 20:37:34*
+*Report generated: 2026-01-28 20:51:09*
 
-**2 papers** | **4 podcasts**
+**0 papers** | **4 podcasts**
 
 ---
-
-## Papers
-
-### 1. Fast ripple-delta coupling as an early biomarker for post-traumatic epileptogenesis in repetitive brain injury.
-
-**Authors:** Oleksii Shandra, Dzenis Mahmutovic, Biswajit Maharathi, Md Adil Arman, Michael J Benko et al.
-
-**Source:** pubmed | **Published:** 2026-Jan-28
-
-**Link:** [https://pubmed.ncbi.nlm.nih.gov/41603153/](https://pubmed.ncbi.nlm.nih.gov/41603153/)
-
-*Summary not available.*
-
-### 2. Modulating tonic NMDA receptor currents: mechanistic insights into ketamine, esketamine, and dextromethorphan for major depressive disorder and implications for the discovery and development of investigational agents.
-
-**Authors:** Gia Han Le, Roger S McIntyre
-
-**Source:** pubmed | **Published:** 2026-Jan-28
-
-**Link:** [https://pubmed.ncbi.nlm.nih.gov/41577431/](https://pubmed.ncbi.nlm.nih.gov/41577431/)
-
-*Summary not available.*
 
 ## Podcast Episodes
 
